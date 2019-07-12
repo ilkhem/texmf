@@ -1,0 +1,313 @@
+% this is a custom package containing all the definitions and packages I use often in beamer
+% 
+% (c) Ilyes Khemakhem
+%
+% 
+
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{mybeamerdefs}
+  [2019/07/12 v0.1 LaTeX package for my own purpose - beamer version]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PACKAGES %%%
+
+\RequirePackage[T1]{fontenc}
+% \RequirePackage[utf8]{inputenc}  % for UTF-8 encoding support
+\RequirePackage[l2tabu, orthodox]{nag}  % warns when you accidentally use deprecated LaTeX constructs
+\RequirePackage{amsmath, amsthm, amssymb}  % effectively loads all ams packages
+\RequirePackage{mathtools}
+\RequirePackage{hyperref}       % hyperlinks
+\RequirePackage{url}            % simple URL typesetting
+\RequirePackage{booktabs}       % professional-quality tables
+\RequirePackage[scale=2]{ccicons}
+\RequirePackage{nicefrac}       % compact symbols for 1/2, etc.
+% \RequirePackage{microtype}  % for nice line-wrapping and hyphenation
+\RequirePackage{enumitem}
+\RequirePackage{xcolor}
+\RequirePackage{caption,subcaption}
+% \RequirePackage{subfig}
+\RequirePackage{tikz}  % for drawing
+\usetikzlibrary{matrix,decorations.pathreplacing,calc, positioning, through}
+\RequirePackage{braket}  % for a bra-ket physics type of bracket
+\RequirePackage{float}
+\RequirePackage{mdframed}  % for boxed theorems
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{courier}
+\RequirePackage{listings}  % for code snippets, algorithms, etc
+\RequirePackage{centernot}
+\RequirePackage{todonotes}  % for adding notes or comments to pdfs}
+\RequirePackage{bm}    % bold math
+
+%\RequirePackage{fancyhdr}
+%\RequirePackage{rotating}
+%\RequirePackage{graphics}  % for figures
+%\RequirePackage{graphicx}  % for figures
+%\texttt{%\RequirePackage{adjustbox}
+%\RequirePackage{amssymb}  % amssymb contains several often-used symbols
+%\RequirePackage{amsmath}  % amsmath provides the \text command
+%\RequirePackage{amsthm}  % amsthm provides an easy way to set up different theorem styles
+%\RequirePackage[colorlinks = true, allcolors = teal, citecolor = blue]{hyperref}  % setting PDF metadata and to create links
+%\RequirePackage[top=3cm,bottom=2.5cm,left=3cm,right=3cm]{geometry}  % for margins
+%\RequirePackage{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% STYLE %%%
+
+\usepackage{ulem}
+\renewcommand<>{\sout}[1]{
+  \only#2{\beameroriginal{\sout}{#1}}
+  \invisible#2{#1}
+}
+
+\let\oldcite=\cite                                              
+\renewcommand{\cite}[1]{\textcolor{mygrey}{\oldcite{#1}}}
+
+\usetheme{metropolis}
+\usepackage{appendixnumberbeamer}
+\AtBeginSection[] {
+	\begin{frame}<beamer>
+		\frametitle{Outline}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
+\setbeamercolor{coloredboxblue}{bg=myblue2}
+\setbeamercolor{titlelike}{fg=title}
+\setbeamercolor{subtitle}{fg=subtitle}
+\setbeamercolor{institute}{fg=title}
+\setbeamercolor{normal text}{fg=foreground,bg=background}
+\setbeamerfont{block title}{size={}}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamercolor*{title}{use=structure,fg=foreground,bg=myblue2}
+\setbeamertemplate{title page}[default][colsep=-4bp,rounded=true,shadow=false]
+% \hypersetup{pdfpagemode=UseNone} % don't show bookmarks on initial view
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+\captionsetup[figure]{labelformat=empty}% redefines the caption setup of the figures environment in the beamer class. (enleve le prefixe "Figure")
+
+%frame numbering
+% \setbeamertemplate{footline}{
+% 	\raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[25pt]{\color{gray}
+% 				\scriptsize\insertframenumber/\,\inserttotalframenumber\hfill}}}\hspace*{5pt}}
+
+
+% new colours
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+% \definecolor{background}{RGB}{254, 254,250} %blanc cassé
+\definecolor{background}{RGB}{255, 255,255} %blanc
+\definecolor{foreground}{RGB}{46,64,87}
+\definecolor{title}{RGB}{57,71,80}
+\definecolor{subtitle}{RGB}{102,255,204}
+\definecolor{hilight}{RGB}{102,255,204}
+\definecolor{vhilight}{RGB}{255,111,207}
+\definecolor{gray}{RGB}{155,155,155}
+\definecolor{myorange}{RGB}{238,118,0}
+\definecolor{myorange2}{rgb}{1,0.8,0.6}
+\definecolor{mygrey2}{RGB}{229,229,229}
+\definecolor{mygrey}{RGB}{169,169,169}
+\definecolor{mygreen}{rgb}{0,0.5,0}
+\definecolor{myblue}{rgb}{0.2,0.2,0.7}
+\definecolor{myred}{RGB}{105,20,14}
+\definecolor{myred}{RGB}{204,0,0}
+\definecolor{myred2}{rgb}{0.93, 0.64, 0.6}
+\definecolor{myblue2}{RGB}{216, 216, 246}
+\definecolor{myblue3}{rgb}{0.5,0.65,1}
+\definecolor{mygray}{rgb}{155,155,155}
+\definecolor{dgreen}{rgb}{0.1, 0.4, 0.1}
+\definecolor{paleturq}{RGB}{224, 255, 255}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% LATEX COMMANDS %%%
+
+% making brackets over and under matrices using tikz:
+% Set various styles for the matrices and braces. It might pay off to fiddle around with the values a little bit
+\pgfkeys{tikz/mymatrixenv/.style={decoration=brace,every left delimiter/.style={xshift=3pt},every right delimiter/.style={xshift=-3pt}}}
+\pgfkeys{tikz/mymatrix/.style={matrix of math nodes,left delimiter=[,right delimiter={]},inner sep=2pt,column sep=1em,row sep=0.5em,nodes={inner sep=0pt}}}
+\pgfkeys{tikz/mymatrixbrace/.style={decorate,thick}}
+\newcommand\mymatrixbraceoffseth{0.5em}
+\newcommand\mymatrixbraceoffsetv{0.2em}
+
+% Now the commands to produce the braces. (I'll explain below how to use them.)
+\newcommand*\mymatrixbraceright[4][m]{
+    \draw[mymatrixbrace] ($(#1.north west)!(#1-#3-1.south west)!(#1.south west)-(\mymatrixbraceoffseth,0)$)
+        -- node[left=2pt] {#4} 
+        ($(#1.north west)!(#1-#2-1.north west)!(#1.south west)-(\mymatrixbraceoffseth,0)$);
+}
+\newcommand*\mymatrixbraceleft[4][m]{
+    \draw[mymatrixbrace] ($(#1.north east)!(#1-#2-1.north east)!(#1.south east)+(\mymatrixbraceoffseth,0)$)
+        -- node[right=2pt] {#4} 
+        ($(#1.north east)!(#1-#3-1.south east)!(#1.south east)+(\mymatrixbraceoffseth,0)$);
+}
+\newcommand*\mymatrixbracetop[4][m]{
+    \draw[mymatrixbrace] ($(#1.north west)!(#1-1-#2.north west)!(#1.north east)+(0,\mymatrixbraceoffsetv)$)
+        -- node[above=2pt] {#4} 
+        ($(#1.north west)!(#1-1-#3.north east)!(#1.north east)+(0,\mymatrixbraceoffsetv)$);
+}
+\newcommand*\mymatrixbracebottom[4][m]{
+    \draw[mymatrixbrace] ($(#1.south west)!(#1-1-#3.south east)!(#1.south east)-(0,\mymatrixbraceoffsetv)$)
+        -- node[below=2pt] {#4} 
+        ($(#1.south west)!(#1-1-#2.south west)!(#1.south east)-(0,\mymatrixbraceoffsetv)$);
+}
+
+
+% theorems
+% \newtheorem{definition}{Definition}
+% \newtheorem{corollary}{Corollary}
+% \newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+% \newtheorem{example}{Example}
+% \newtheorem{theorem}{Theorem}
+% \newtheorem{problem}{Problem}
+\newtheorem{remark}{Remark}
+
+
+% framed theorems and environments
+\newmdtheoremenv{ftheorem}{Theorem}
+\newmdtheoremenv{fproblem}{Probelm}
+\newmdtheoremenv{fremark}{Remark}
+\newmdtheoremenv{fdefinition}{Definition}
+\newmdtheoremenv{fproposition}{Proposition}
+\newmdtheoremenv{flemma}{Lemma}
+
+\newenvironment{variableblock}[3]{%
+	\setbeamercolor{block body}{#2}
+	\setbeamercolor{block title}{#3}
+	\begin{block}{#1}}{\end{block}}
+
+\newenvironment{notitleblock}[1]{%
+    \setbeamercolor{block body}{#1}
+	\begin{block}{}}{\end{block}}
+
+% QED symbols
+\newcommand*{\QEDB}{\hfill\ensuremath{\blacksquare}}%
+\newcommand*{\QED}{\hfill\ensuremath{\square}}%
+
+% warning sign
+\newcommand*{\TakeFourierOrnament}[1]{{%
+		\fontencoding{U}\fontfamily{futs}\selectfont\char#1}}
+\newcommand*{\danger}{\TakeFourierOrnament{66}}
+
+% deriv
+\providecommand*{\deriv}[3][]{\frac{\diff^{#1}#2}{\diff#3^{#1}}}
+\providecommand*{\pderiv}[3][]{\frac{\partial^{#1}#2}{\partial#3^{#1}}}
+
+% math
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\DD}{\mathcal{D}}
+\newcommand{\GG}{\mathbf{G}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\WW}{\mathcal{W}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\CCinf}{\mathcal{C}^{\infty}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\XX}{\mathcal{X}}
+\newcommand{\Zcal}{\mathcal{Z}}
+\newcommand{\Qcal}{\mathcal{Q}}
+\newcommand{\Ncal}{\mathcal{N}}
+\newcommand{\Rcal}{\mathcal{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\prob}{\mathbb{P}}
+
+\newcommand{\notimplies}{\centernot\implies}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\snorm}[1]{\left\vert#1\right\vert}
+\newcommand{\iset}[1]{[\![#1]\!]}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\Sinv}{\Sigma^{-1}}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\ones}{\mathbf 1}
+\newcommand{\bigslant}[2]{{\raisebox{.2em}{$#1$}\left/\raisebox{-.2em}{$#2$}\right.}}
+
+\newcommand{\dotprod}[2]{\ensuremath{\langle #1 , #2\,\rangle}}
+\newcommand{\KL}[2]{\operatorname*{KL}\left(#1 \| #2 \right)}
+\newcommand{\softmin}{\operatorname*{softmin_\beta}}
+\newcommand{\minb}{\operatorname*{min^\beta}}
+\newcommand{\argmin}{\operatorname*{argmin}}
+\newcommand{\sdtwo}{\operatorname*{{dtw}_0}}
+\newcommand{\sdtw}{\operatorname*{{dtw}_\beta}}
+\newcommand{\diagmat}{\operatorname{diag}}
+\newcommand{\DTW}{\operatorname*{DTW}}
+\newcommand{\dtw}{\operatorname*{dtw}}
+\newcommand{\WDTW}{\operatorname*{WDTW}}
+\newcommand{\wdtw}{\operatorname*{wdtw}}
+\newcommand{\vol}{\operatorname*{vol}}
+
+
+% bold
+\DeclareBoldMathCommand\thetab{\theta}
+\DeclareBoldMathCommand\phib{\phi}
+\DeclareBoldMathCommand\taub{\tau}
+\DeclareBoldMathCommand\sigmab{\sigma}
+\DeclareBoldMathCommand\lambdab{\lambda}
+\DeclareBoldMathCommand\gammab{\gamma}
+\DeclareBoldMathCommand\Deltab{\Delta}
+\DeclareBoldMathCommand\epsb{\varepsilon}
+\newcommand{\Ab}{\mathbf{A}}
+\newcommand{\Bb}{\mathbf{B}}
+\newcommand{\Tb}{\mathbf{T}}
+\newcommand{\xb}{\mathbf{x}}
+\newcommand{\yb}{\mathbf{y}}
+\newcommand{\zb}{\mathbf{z}}
+\newcommand{\sbf}{\mathbf{s}}
+\renewcommand{\sb}{\mathbf{s}}
+\newcommand{\fb}{\mathbf{f}}
+\newcommand{\gb}{\mathbf{g}}
+\newcommand{\hb}{\mathbf{h}}
+\newcommand{\mb}{\mathbf{m}}
+\newcommand{\pb}{\mathbf{p}}
+\newcommand{\lb}{\mathbf{l}}
+\newcommand{\ub}{\mathbf{u}}
+
+
+% bold and bar
+\newcommand{\xbar}{\bar{\mathbf{x}}}
+
+\newcommand{\altsim}{\overline{\sim}}
+
+% text abbrevs
+\newcommand{\cf}{\textit{ cf. }}
+\newcommand{\eg}{\textit{ e.g. }}
+\newcommand{\ie}{\textit{ i.e. }}
+\newcommand{\etc}{\textit{ etc. }}
+\newcommand{\iif}{\textit{ iif }}
+\newcommand{\st}{\textrm{ s.t. }}
+
+
+% std math stuff
+\newcommand{\reals}{{\mbox{\bf R}}}
+\newcommand{\integers}{{\mbox{\bf Z}}}
+\newcommand{\eqbydef}{\mathrel{\stackrel{\Delta}{=}}}
+\newcommand{\complex}{{\mbox{\bf C}}}
+\newcommand{\symm}{{\mbox{\bf S}}}  % symmetric matrices
+
+% lin alg stuff
+\newcommand{\Span}{\mbox{\textrm{span}}}
+\newcommand{\Range}{\mbox{\textrm{range}}}
+\newcommand{\nullspace}{{\mathcal N}}
+\newcommand{\range}{{\mathcal R}}
+\newcommand{\Nullspace}{\mbox{\textrm{nullspace}}}
+\newcommand{\Rank}{\mathop{\bf Rank}}
+\newcommand{\Tr}{\mathop{\bf Tr}}
+\newcommand{\diag}{\mathop{\bf diag}}
+\newcommand{\lambdamax}{{\lambda_{\rm max}}}
+\newcommand{\lambdamin}{\lambda_{\rm min}}
+
+
+\endinput
+%%
+%% End of file `mybeamerdefs.sty'.
