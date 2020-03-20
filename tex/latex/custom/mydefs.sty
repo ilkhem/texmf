@@ -1,8 +1,8 @@
 % this is a custom package containing all the definitions and packages I use often
-% 
+%
 % (c) Ilyes Khemakhem
 %
-% 
+%
 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{mydefs}
@@ -12,8 +12,8 @@
 
 %%% PACKAGES %%%
 
-\RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}  % for UTF-8 encoding support
+\RequirePackage[T1]{fontenc}
 \RequirePackage[l2tabu, orthodox]{nag}  % warns when you accidentally use deprecated LaTeX constructs
 \RequirePackage{amsmath, amsthm, amssymb}  % effectively loads all ams packages
 \RequirePackage{mathtools}
@@ -35,13 +35,15 @@
 \RequirePackage{braket}  % for a bra-ket physics type of bracket
 \RequirePackage{float}
 \RequirePackage{mdframed}  % for boxed theorems
-\RequirePackage[most]{tcolorbox }
-\RequirePackage{courier}
+\RequirePackage[most]{tcolorbox}
 \RequirePackage{listings}  % for code snippets, algorithms, etc
 \RequirePackage{microtype}  % for nice line-wrapping and hyphenation
 \RequirePackage{todonotes}  % for adding notes or comments to pdfs}
 \RequirePackage{bm}    % bold math
-
+\RequirePackage{dsfont}
+\RequirePackage{centernot}
+\RequirePackage{textcomp}
+\RequirePackage{cleveref}
 
 
 
@@ -67,22 +69,22 @@
 % Now the commands to produce the braces. (I'll explain below how to use them.)
 \newcommand*\mymatrixbraceright[4][m]{
     \draw[mymatrixbrace] ($(#1.north west)!(#1-#3-1.south west)!(#1.south west)-(\mymatrixbraceoffseth,0)$)
-        -- node[left=2pt] {#4} 
+        -- node[left=2pt] {#4}
         ($(#1.north west)!(#1-#2-1.north west)!(#1.south west)-(\mymatrixbraceoffseth,0)$);
 }
 \newcommand*\mymatrixbraceleft[4][m]{
     \draw[mymatrixbrace] ($(#1.north east)!(#1-#2-1.north east)!(#1.south east)+(\mymatrixbraceoffseth,0)$)
-        -- node[right=2pt] {#4} 
+        -- node[right=2pt] {#4}
         ($(#1.north east)!(#1-#3-1.south east)!(#1.south east)+(\mymatrixbraceoffseth,0)$);
 }
 \newcommand*\mymatrixbracetop[4][m]{
     \draw[mymatrixbrace] ($(#1.north west)!(#1-1-#2.north west)!(#1.north east)+(0,\mymatrixbraceoffsetv)$)
-        -- node[above=2pt] {#4} 
+        -- node[above=2pt] {#4}
         ($(#1.north west)!(#1-1-#3.north east)!(#1.north east)+(0,\mymatrixbraceoffsetv)$);
 }
 \newcommand*\mymatrixbracebottom[4][m]{
     \draw[mymatrixbrace] ($(#1.south west)!(#1-1-#3.south east)!(#1.south east)-(0,\mymatrixbraceoffsetv)$)
-        -- node[below=2pt] {#4} 
+        -- node[below=2pt] {#4}
         ($(#1.south west)!(#1-1-#2.south west)!(#1.south east)-(0,\mymatrixbraceoffsetv)$);
 }
 
@@ -96,6 +98,32 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{problem}{Problem}
 \newtheorem{remark}{Remark}
+
+
+% manual numbering of theorems and such
+\newtheorem{manualtheoreminner}{Theorem}
+\newenvironment{manualtheorem}[1]{%
+  \renewcommand\themanualtheoreminner{#1}%
+  \manualtheoreminner
+}{\endmanualtheoreminner}
+
+\newtheorem{manualpropositioninner}{Proposition}
+\newenvironment{manualproposition}[1]{%
+  \renewcommand\themanualpropositioninner{#1}%
+  \manualpropositioninner
+}{\endmanualpropositioninner}
+
+\newtheorem{manuallemmainner}{Lemma}
+\newenvironment{manuallemma}[1]{%
+  \renewcommand\themanuallemmainner{#1}%
+  \manuallemmainner
+}{\endmanuallemmainner}
+
+\newtheorem{manualdefinitioninner}{Definition}
+\newenvironment{manualdefinition}[1]{%
+  \renewcommand\themanualdefinitioninner{#1}%
+  \manualdefinitioninner
+}{\endmanualdefinitioninner}
 
 
 % framed theorems
@@ -115,47 +143,28 @@
     \setbeamercolor{block body}{#1}
 	\begin{block}{}}{\end{block}}
 
+
 % QED symbols
 \newcommand*{\QEDB}{\hfill\ensuremath{\blacksquare}}%
 \newcommand*{\QED}{\hfill\ensuremath{\square}}%
+
 
 % warning sign
 \newcommand*{\TakeFourierOrnament}[1]{{%
 		\fontencoding{U}\fontfamily{futs}\selectfont\char#1}}
 \newcommand*{\danger}{\TakeFourierOrnament{66}}
 
+
 % deriv
 \providecommand*{\deriv}[3][]{\frac{\dd^{#1}#2}{\dd#3^{#1}}}
 \providecommand*{\pderiv}[3][]{\frac{\partial^{#1}#2}{\partial#3^{#1}}}
 
-% math
-\newcommand{\RR}{\mathbb{R}}
-\newcommand{\NN}{\mathbb{N}}
-\newcommand{\QQ}{\mathbb{Q}}
-\newcommand{\ZZ}{\mathbb{Z}}
-\newcommand{\DD}{\mathcal{D}}
-\newcommand{\GG}{\mathbf{G}}
-\newcommand{\EE}{\mathbb{E}}
+
+% misc math
 \newcommand{\dd}{\mathrm{d}}
 \newcommand{\id}{\mathrm{id}}
-\newcommand{\WW}{\mathcal{W}}
-\newcommand{\PP}{\mathcal{P}}
-\newcommand{\MM}{\mathcal{M}}
-\newcommand{\UU}{\mathcal{U}}
-\newcommand{\LL}{\mathcal{L}}
-\newcommand{\TT}{\mathcal{T}}
-\newcommand{\CC}{\mathcal{C}}
 \newcommand{\CCinf}{\mathcal{C}^{\infty}}
-\newcommand{\HH}{\mathcal{H}}
-\newcommand{\XX}{\mathcal{X}}
-\newcommand{\YY}{\mathcal{Y}}
-\newcommand{\Zcal}{\mathcal{Z}}
-\newcommand{\Qcal}{\mathcal{Q}}
-\newcommand{\Ncal}{\mathcal{N}}
-\newcommand{\Rcal}{\mathcal{R}}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\prob}{\mathbb{P}}
-
 \newcommand{\notimplies}{\centernot\implies}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\snorm}[1]{\left\vert#1\right\vert}
@@ -169,6 +178,8 @@
 \newcommand{\independent}{\perp\mkern-9.5mu\perp}
 \newcommand{\notindependent}{\centernot{\independent}}
 
+
+% Operators
 \newcommand{\dotprod}[2]{\ensuremath{\langle #1 , #2\,\rangle}}
 \newcommand{\KL}[2]{\operatorname*{KL}\left(#1 \| #2 \right)}
 \newcommand{\softmin}{\operatorname*{softmin_\beta}}
@@ -176,54 +187,145 @@
 \newcommand{\argmin}{\operatorname*{argmin}}
 \newcommand{\sdtwo}{\operatorname*{{dtw}_0}}
 \newcommand{\sdtw}{\operatorname*{{dtw}_\beta}}
-\newcommand{\diagmat}{\operatorname{diag}}
+\newcommand{\diag}{\operatorname{diag}}
 \newcommand{\DTW}{\operatorname*{DTW}}
 \newcommand{\dtw}{\operatorname*{dtw}}
 \newcommand{\WDTW}{\operatorname*{WDTW}}
 \newcommand{\wdtw}{\operatorname*{wdtw}}
 \newcommand{\vol}{\operatorname*{vol}}
-\newcommand{\TC}{\operatorname*{TC}}
+\newcommand{\tr}{\operatorname*{tr}}
+\newcommand{\trace}{\operatorname*{trace}}
+\newcommand{\rank}{\operatorname*{rank}}
+\newcommand{\rk}{\operatorname*{rk}}
+\newcommand{\sign}{\operatorname*{sign}}
+\newcommand{\lambdamax}{{\lambda_{\rm max}}}
+\newcommand{\lambdamin}{\lambda_{\rm min}}
+\newcommand{\sigmamin}{\sigma_{\textrm{min}}}
+\newcommand{\sigmamax}{\sigma_{\textrm{max}}}
 
 
 
-% bold
-\DeclareBoldMathCommand\thetab{\theta}
-\DeclareBoldMathCommand\phib{\phi}
-\DeclareBoldMathCommand\mub{\mu}
-\DeclareBoldMathCommand\taub{\tau}
-\DeclareBoldMathCommand\sigmab{\sigma}
-\DeclareBoldMathCommand\lambdab{\lambda}
-\DeclareBoldMathCommand\alphab{\alpha}
-\DeclareBoldMathCommand\gammab{\gamma}
-\DeclareBoldMathCommand\Deltab{\Delta}
-\DeclareBoldMathCommand\epsb{\varepsilon}
-\newcommand{\Ab}{\mathbf{A}}
-\newcommand{\Bb}{\mathbf{B}}
-\newcommand{\Qb}{\mathbf{Q}}
-\newcommand{\Zb}{\mathbf{Z}}
-\newcommand{\Hb}{\mathbf{H}}
-\newcommand{\Tb}{\mathbf{T}}
-\newcommand{\xb}{\mathbf{x}}
-\newcommand{\yb}{\mathbf{y}}
-\newcommand{\zb}{\mathbf{z}}
-\newcommand{\sbf}{\mathbf{s}}
-\renewcommand{\sb}{\mathbf{s}}
+% Bold Alphabet
+\newcommand{\ab}{\mathbf{a}}
+\newcommand{\bb}{\mathbf{b}}
+\newcommand{\cb}{\mathbf{c}}
+\newcommand{\db}{\mathbf{d}}
+\newcommand{\eb}{\mathbf{e}}
 \newcommand{\fb}{\mathbf{f}}
 \newcommand{\gb}{\mathbf{g}}
 \newcommand{\hb}{\mathbf{h}}
-\newcommand{\mb}{\mathbf{m}}
-\newcommand{\pb}{\mathbf{p}}
+\newcommand{\ib}{\mathbf{i}}
+\newcommand{\jb}{\mathbf{j}}
+\newcommand{\kb}{\mathbf{k}}
 \newcommand{\lb}{\mathbf{l}}
+\newcommand{\mb}{\mathbf{m}}
+\newcommand{\nbb}{\mathbf{n}}
+\newcommand{\ob}{\mathbf{o}}
+\newcommand{\pb}{\mathbf{p}}
+\newcommand{\qb}{\mathbf{q}}
+\newcommand{\rb}{\mathbf{r}}
+\renewcommand{\sb}{\mathbf{s}}
+\newcommand{\tb}{\mathbf{t}}
 \newcommand{\ub}{\mathbf{u}}
-\newcommand{\eb}{\mathbf{e}}
 \newcommand{\vb}{\mathbf{v}}
+\newcommand{\wb}{\mathbf{w}}
+\newcommand{\xb}{\mathbf{x}}
+\newcommand{\yb}{\mathbf{y}}
+\newcommand{\zb}{\mathbf{z}}
+% Upper case
+\newcommand{\Ab}{\mathbf{A}}
+\newcommand{\Bb}{\mathbf{B}}
+\newcommand{\Cb}{\mathbf{C}}
+\newcommand{\Db}{\mathbf{D}}
+\newcommand{\Eb}{\mathbf{E}}
+\newcommand{\Fb}{\mathbf{F}}
+\newcommand{\Gb}{\mathbf{G}}
+\newcommand{\Hb}{\mathbf{H}}
+\newcommand{\Ib}{\mathbf{I}}
+\newcommand{\Jb}{\mathbf{J}}
+\newcommand{\Kb}{\mathbf{K}}
+\newcommand{\Lb}{\mathbf{L}}
+\newcommand{\Mb}{\mathbf{M}}
+\newcommand{\Nb}{\mathbf{N}}
+\newcommand{\Ob}{\mathbf{O}}
+\newcommand{\Pb}{\mathbf{P}}
+\newcommand{\Qb}{\mathbf{Q}}
 \newcommand{\Rb}{\mathbf{R}}
-
-
+\newcommand{\Sb}{\mathbf{S}}
+\newcommand{\Tb}{\mathbf{T}}
+\newcommand{\Ub}{\mathbf{U}}
+\newcommand{\Vb}{\mathbf{V}}
+\newcommand{\Wb}{\mathbf{W}}
+\newcommand{\Xb}{\mathbf{X}}
+\newcommand{\Yb}{\mathbf{Y}}
+\newcommand{\Zb}{\mathbf{Z}}
+% greek
+\DeclareBoldMathCommand\alphab{\alpha}
+\DeclareBoldMathCommand\betab{\beta}
+\DeclareBoldMathCommand\gammab{\gamma}
+\DeclareBoldMathCommand\deltab{\delta}
+\DeclareBoldMathCommand\epsb{\varepsilon}
+\DeclareBoldMathCommand\lambdab{\lambda}
+\DeclareBoldMathCommand\mub{\mu}
+\DeclareBoldMathCommand\omegab{\omega}
+\DeclareBoldMathCommand\phib{\phi}
+\DeclareBoldMathCommand\thetab{\theta}
+\DeclareBoldMathCommand\taub{\tau}
+\DeclareBoldMathCommand\sigmab{\sigma}
+\DeclareBoldMathCommand\Gammab{\Gamma}
+\DeclareBoldMathCommand\Deltab{\Delta}
+\DeclareBoldMathCommand\Lambdab{\Lambda}
+\DeclareBoldMathCommand\Omegab{\Omega}
+\DeclareBoldMathCommand\Phib{\Phi}
+\DeclareBoldMathCommand\Thetab{\Theta}
+\DeclareBoldMathCommand\Sigmab{\Sigma}
 % bold and bar
 \newcommand{\xbar}{\bar{\mathbf{x}}}
 
-\newcommand{\altsim}{\overline{\sim}}
+% Calligraphic fonts
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\Bcal}{\mathcal{B}}
+\newcommand{\Ccal}{\mathcal{C}}
+\newcommand{\Dcal}{\mathcal{D}}
+\newcommand{\Ecal}{\mathcal{E}}
+\newcommand{\Fcal}{\mathcal{F}}
+\newcommand{\Gcal}{\mathcal{G}}
+\newcommand{\Hcal}{\mathcal{H}}
+\newcommand{\Ical}{\mathcal{I}}
+\newcommand{\Jcal}{\mathcal{J}}
+\newcommand{\Kcal}{\mathcal{K}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Mcal}{\mathcal{M}}
+\newcommand{\Ncal}{\mathcal{N}}
+\newcommand{\Ocal}{\mathcal{O}}
+\newcommand{\Pcal}{\mathcal{P}}
+\newcommand{\Qcal}{\mathcal{Q}}
+\newcommand{\Rcal}{\mathcal{R}}
+\newcommand{\Scal}{\mathcal{S}}
+\newcommand{\Tcal}{\mathcal{T}}
+\newcommand{\Ucal}{\mathcal{U}}
+\newcommand{\Vcal}{\mathcal{V}}
+\newcommand{\Wcal}{\mathcal{W}}
+\newcommand{\Xcal}{\mathcal{X}}
+\newcommand{\Ycal}{\mathcal{Y}}
+\newcommand{\Zcal}{\mathcal{Z}}
+
+% bb fonts
+\newcommand{\CC}{\mathbb{C}} % Complex numbers
+\newcommand{\DD}{\mathbb{D}} % \mathbb(D)
+\newcommand{\EE}{\mathbb{E}} % Expectation
+\newcommand{\VV}{\mathbb{V}} % Variance
+\newcommand{\II}{\mathbb{I}} % Indicator
+\newcommand{\KK}{\mathbb{K}} % Arbitrary field
+\newcommand{\LL}{\mathbb{L}} % Loss
+\newcommand{\MM}{\mathbb{M}} % Median
+\newcommand{\NN}{\mathbb{N}} % Natural numbers
+\newcommand{\PP}{\mathbb{P}} % Probability
+\newcommand{\QQ}{\mathbb{Q}} % Rationals
+\newcommand{\RR}{\mathbb{R}} % Real numbers
+\newcommand{\XX}{\mathbb{X}} %
+\newcommand{\YY}{\mathbb{Y}} %
+\newcommand{\ZZ}{\mathbb{Z}} % Integers
 
 
 % text abbrevs
@@ -234,24 +336,6 @@
 \newcommand{\iif}{\textit{ iif }}
 \newcommand{\st}{\textrm{ s.t. }}
 
-% std math stuff
-\newcommand{\reals}{{\mbox{\bf R}}}
-\newcommand{\integers}{{\mbox{\bf Z}}}
-\newcommand{\eqbydef}{\mathrel{\stackrel{\Delta}{=}}}
-\newcommand{\complex}{{\mbox{\bf C}}}
-\newcommand{\symm}{{\mbox{\bf S}}}  % symmetric matrices
-
-% lin alg stuff
-\newcommand{\Span}{\mbox{\textrm{span}}}
-\newcommand{\Range}{\mbox{\textrm{range}}}
-\newcommand{\nullspace}{{\mathcal N}}
-\newcommand{\range}{{\mathcal R}}
-\newcommand{\Nullspace}{\mbox{\textrm{nullspace}}}
-\newcommand{\Rank}{\mathop{\bf Rank}}
-\newcommand{\Tr}{\mathop{\bf Tr}}
-\newcommand{\diag}{\mathop{\bf diag}}
-\newcommand{\lambdamax}{{\lambda_{\rm max}}}
-\newcommand{\lambdamin}{\lambda_{\rm min}}
 
 
 \endinput
